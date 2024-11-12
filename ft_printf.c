@@ -6,7 +6,7 @@
 /*   By: mjuncker <mjuncker@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:15:36 by mjuncker          #+#    #+#             */
-/*   Updated: 2024/11/12 17:34:04 by mjuncker         ###   ########.fr       */
+/*   Updated: 2024/11/12 18:00:59 by mjuncker         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,24 @@ size_t	count_char(const char *s, char c)
 	return (count);
 }
 
-void	ft_putnbr_hex(long int nbr, char *base, int fd)
+void	ft_putnbr_hex(long int nbr, char *base, int fd, int *count)
 {
-	if (nbr < 0)
-	{
-		ft_putchar_fd('-', fd);
-		ft_putnbr_hex(nbr * -1, base, fd);
-		return ;
-	}
 	if (nbr / 16 > 0)
 	{
-		ft_putnbr_hex(nbr / 16, base, fd);
-		ft_putnbr_hex((nbr % 16), base, fd);
+		ft_putnbr_hex(nbr / 16, base, fd, count);
+		(*count)++;
+		ft_putnbr_hex((nbr % 16), base, fd, count);
 	}
 	else
 		ft_putchar_fd(base[nbr], fd);
 }
 
-void	putaddr(long int nbr, char *base, int fd)
+int	putaddr(long int nbr, char *base, int fd)
 {
+	int count = 2;
 	ft_putstr_fd("0x", 1);
-	ft_putnbr_hex(nbr, base, fd);
+	ft_putnbr_hex(nbr, base, fd, &count);
+	return count;
 }
 
 
@@ -87,7 +84,9 @@ int	ft_printf(const char *s, ...)
 				continue;
 			}
 			if (*s == 'p')
-				putaddr((long int)tmp, "0123456789abcdef", 1);
+			{
+				nb_write += putaddr(va_arg(ptr, long int), "0123456789abcdef", 1);
+			}
 			nb_write++;
 		}
 		else
