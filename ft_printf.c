@@ -6,11 +6,60 @@
 /*   By: mjuncker <mjuncker@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:15:36 by mjuncker          #+#    #+#             */
-/*   Updated: 2024/11/12 18:00:59 by mjuncker         ###   ########.fr       */
+/*   Updated: 2024/11/13 21:06:54 by mjuncker         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+static size_t	uget_nb_len(unsigned int n)
+{
+	size_t		i;
+	long int	nb;
+
+	nb = (long)n;
+	i = 1;
+	if (nb < 0)
+	{
+		i++;
+		nb *= -1;
+	}
+	while (nb / 10 > 0)
+	{
+		i++;
+		nb /= 10;
+	}
+	return (i);
+}
+
+char	*u_ft_itoa(unsigned int n)
+{
+	unsigned long int	nb;
+	char		*res;
+	size_t		i;
+	size_t		len;
+
+	len = uget_nb_len(n);
+	nb = (unsigned long)n;
+	res = malloc(len + 1);
+	i = 0;
+	if (!res)
+		return (NULL);
+	if (n == 0)
+		res[0] = '0';
+	if (nb < 0)
+	{
+		nb *= -1;
+		res[0] = '-';
+	}
+	while (nb > 0)
+	{
+		res[len - i++ - 1] = (nb % 10) + '0';
+		nb /= 10;
+	}
+	res[len] = '\0';
+	return (res);
+}
 
 size_t	count_char(const char *s, char c)
 {
@@ -28,6 +77,12 @@ size_t	count_char(const char *s, char c)
 
 void	ft_putnbr_hex(long int nbr, char *base, int fd, int *count)
 {
+	if (nbr < 0)
+	{
+		ft_putchar_fd('-', 1);
+		ft_putnbr_hex(nbr * -1, base, fd, count);
+		return ;
+	}
 	if (nbr / 16 > 0)
 	{
 		ft_putnbr_hex(nbr / 16, base, fd, count);
@@ -46,6 +101,7 @@ int	putaddr(long int nbr, char *base, int fd)
 	return count;
 }
 
+// TODO: for %p just print 0x followed by the function to print %x
 
 int	ft_printf(const char *s, ...)
 {
@@ -59,10 +115,31 @@ int	ft_printf(const char *s, ...)
 		if (*s == '%')
 		{
 			s++;
-			if (*s == 'd')
-				ft_putnbr_fd(va_arg(ptr, int), 1);
+			if (*s == '%')
+			{
+				ft_putchar_fd('%', 1);
+				nb_write++;
+			}
+			if (*s == 'd' || *s == 'i')
+			{
+				tmp = (void *)ft_itoa(va_arg(ptr, int));
+				ft_putstr_fd((char *)tmp, 1);
+				nb_write += ft_strlen((char *)tmp);
+				free(tmp);
+			}
+			if (*s == 'u')
+			{
+				unsigned int t = va_arg(ptr, unsigned int);
+				tmp = (void *)u_ft_itoa(t);
+				ft_putstr_fd((char *)tmp, 1);
+				nb_write += ft_strlen((char *)tmp);
+				free(tmp);
+			}
 			if (*s == 'c')
+			{
 				ft_putchar_fd(va_arg(ptr, int) % 256, 1);
+				nb_write++;
+			}
 			if (*s == 's')
 			{
 				tmp = va_arg(ptr, void *);
@@ -83,11 +160,19 @@ int	ft_printf(const char *s, ...)
 
 				continue;
 			}
+			if (*s == 'x' || *s == 'X')
+			{
+				int count = 1;
+				if (*s == 'x')
+					ft_putnbr_hex(va_arg(ptr, long int), "0123456789abcdef", 1, &count);
+				else
+					ft_putnbr_hex(va_arg(ptr, long int), "0123456789ABCDEF", 1, &count);
+				nb_write += count;
+			}
 			if (*s == 'p')
 			{
-				nb_write += putaddr(va_arg(ptr, long int), "0123456789abcdef", 1);
+				nb_write += putaddr(va_arg(ptr, long int), "0123456789abcdef", 1) + 1;
 			}
-			nb_write++;
 		}
 		else
 		{
