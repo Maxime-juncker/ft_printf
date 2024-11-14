@@ -6,11 +6,12 @@
 /*   By: mjuncker <mjuncker@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:15:36 by mjuncker          #+#    #+#             */
-/*   Updated: 2024/11/13 21:06:54 by mjuncker         ###   ########.fr       */
+/*   Updated: 2024/11/14 14:05:14 by mjuncker         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <limits.h>
 
 static size_t	uget_nb_len(unsigned int n)
 {
@@ -75,14 +76,8 @@ size_t	count_char(const char *s, char c)
 	return (count);
 }
 
-void	ft_putnbr_hex(long int nbr, char *base, int fd, int *count)
+void	ft_putnbr_hex(unsigned long int nbr, char *base, int fd, int *count)
 {
-	if (nbr < 0)
-	{
-		ft_putchar_fd('-', 1);
-		ft_putnbr_hex(nbr * -1, base, fd, count);
-		return ;
-	}
 	if (nbr / 16 > 0)
 	{
 		ft_putnbr_hex(nbr / 16, base, fd, count);

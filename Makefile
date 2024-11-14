@@ -6,7 +6,7 @@
 #    By: mjuncker <mjuncker@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/24 18:00:56 by mjuncker          #+#    #+#              #
-#    Updated: 2024/11/12 14:57:20 by mjuncker         ###   ########.fr        #
+#    Updated: 2024/11/14 14:14:10 by mjuncker         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,8 @@ CC = cc
 CFLAGS = -Wall -Werror -Wextra -Ilibft/ -g3
 SRCS =  ft_printf.c
 
+OBJ_D = obj/
+BIN_D = bin/
 OBJ = $(SRCS:.c=.o)
 NAME = libftprintf.a
 
@@ -25,7 +27,7 @@ $(NAME): $(OBJ)
 	mv ./libft/libft.a $(NAME)
 	ar rcs $(NAME) $(OBJ)
 
-%.o : %.c libft.h
+$(OBJ_D)/%.o : %.c libft.h
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 .PHONY: clean
@@ -47,5 +49,9 @@ re: fclean
 debug: $(OBJ) $(BOBJ)
 	make -C ./libft
 	$(CC) $(CFLAGS) $(OBJ) ./libft/*.o main.c -o a.out
+
+.PHONY: valgrind
+valgrind: debug
+	@valgrind ./a.out
 
 
