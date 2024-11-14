@@ -6,7 +6,7 @@
 /*   By: mjuncker <mjuncker@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:18:40 by mjuncker          #+#    #+#             */
-/*   Updated: 2024/11/14 14:11:36 by mjuncker         ###   ########.fr       */
+/*   Updated: 2024/11/14 18:07:55 by mjuncker         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@ int	main(void)
 	int	t = 0;
 	int	t2 = 0;
 
-	t = ft_printf(" %x ", LONG_MAX);
+
+	void* te = NULL;
+
+	t = ft_printf(" %p ", 0);
 	printf("\n");
-	t2 = printf(" %lx ", LONG_MAX);
+	t2 = printf(" %p ", te);
 	printf("\n");
 
 	printf("ft_printf: %d printf: %d\n", t, t2);

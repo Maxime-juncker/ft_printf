@@ -6,7 +6,7 @@
 /*   By: mjuncker <mjuncker@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:15:36 by mjuncker          #+#    #+#             */
-/*   Updated: 2024/11/14 14:05:14 by mjuncker         ###   ########.fr       */
+/*   Updated: 2024/11/14 18:08:55 by mjuncker         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,6 @@ char	*u_ft_itoa(unsigned int n)
 	}
 	res[len] = '\0';
 	return (res);
-}
-
-size_t	count_char(const char *s, char c)
-{
-	size_t	count;
-
-	count = 0;
-	while (*s)
-	{
-		if (*s == c)
-			count++;
-		s++;
-	}
-	return (count);
 }
 
 void	ft_putnbr_hex(unsigned long int nbr, char *base, int fd, int *count)
@@ -166,7 +152,14 @@ int	ft_printf(const char *s, ...)
 			}
 			if (*s == 'p')
 			{
-				nb_write += putaddr(va_arg(ptr, long int), "0123456789abcdef", 1) + 1;
+				tmp = va_arg(ptr, void *);
+				if (tmp == 0)
+				{
+					ft_putstr_fd("(nil)", 1);
+					nb_write += 5;
+				}
+				else
+					nb_write += putaddr((long int)tmp, "0123456789abcdef", 1) + 1;
 			}
 		}
 		else

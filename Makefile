@@ -6,7 +6,7 @@
 #    By: mjuncker <mjuncker@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/24 18:00:56 by mjuncker          #+#    #+#              #
-#    Updated: 2024/11/14 17:35:23 by mjuncker         ###   ########.fr        #
+#    Updated: 2024/11/14 17:47:10 by mjuncker         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,6 @@ debug: $(OBJ)
 
 .PHONY: valgrind
 valgrind: debug
-	@valgrind ./a.out
+	@valgrind --track-origins=yes ./a.out
 
 
