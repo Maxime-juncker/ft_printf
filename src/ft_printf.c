@@ -6,12 +6,21 @@
 /*   By: mjuncker <mjuncker@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:15:36 by mjuncker          #+#    #+#             */
-/*   Updated: 2024/11/14 18:08:55 by mjuncker         ###   ########.fr       */
+/*   Updated: 2024/11/14 18:38:01 by mjuncker         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include <limits.h>
+
+/*
+	TODO: remove unsused include
+	TODO: check if main.c of .vscode is in git or any useless files
+	TODO: norminette...
+	TODO: refactor everything
+	TODO: make makefile for libft along folder for bin, obj, src, include
+	TODO: Check every malloc protection
+*/
 
 static size_t	uget_nb_len(unsigned int n)
 {
@@ -74,6 +83,7 @@ void	ft_putnbr_hex(unsigned long int nbr, char *base, int fd, int *count)
 		ft_putchar_fd(base[nbr], fd);
 }
 
+
 int	putaddr(long int nbr, char *base, int fd)
 {
 	int count = 2;
@@ -81,8 +91,6 @@ int	putaddr(long int nbr, char *base, int fd)
 	ft_putnbr_hex(nbr, base, fd, &count);
 	return count;
 }
-
-// TODO: for %p just print 0x followed by the function to print %x
 
 int	ft_printf(const char *s, ...)
 {
@@ -145,9 +153,9 @@ int	ft_printf(const char *s, ...)
 			{
 				int count = 1;
 				if (*s == 'x')
-					ft_putnbr_hex(va_arg(ptr, long int), "0123456789abcdef", 1, &count);
+					ft_putnbr_hex(va_arg(ptr, unsigned int), "0123456789abcdef", 1, &count);
 				else
-					ft_putnbr_hex(va_arg(ptr, long int), "0123456789ABCDEF", 1, &count);
+					ft_putnbr_hex(va_arg(ptr, unsigned int), "0123456789ABCDEF", 1, &count);
 				nb_write += count;
 			}
 			if (*s == 'p')
