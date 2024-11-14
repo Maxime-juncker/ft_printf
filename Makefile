@@ -6,48 +6,59 @@
 #    By: mjuncker <mjuncker@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/24 18:00:56 by mjuncker          #+#    #+#              #
-#    Updated: 2024/11/14 14:14:10 by mjuncker         ###   ########.fr        #
+#    Updated: 2024/11/14 17:35:23 by mjuncker         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC = cc
-CFLAGS = -Wall -Werror -Wextra -Ilibft/ -g3
-SRCS =  ft_printf.c
+NAME = libftprintf.a
 
 OBJ_D = obj/
-BIN_D = bin/
+SRCS_D = src/
+INCLUDES_D =	-Iincludes/ \
+				-Ilibft/	\
+
+
+SRCS =  ft_printf.c
 OBJ = $(SRCS:.c=.o)
-NAME = libftprintf.a
+
+OBJ := $(addprefix $(OBJ_D), $(OBJ))
+SRCS := $(addprefix $(SRCS_D), $(SRCS))
+
+CC = cc
+CFLAGS = -Wall -Werror -Wextra -g3 $(INCLUDES_D)
+
+RM = rm -fr
 
 .PHONY: all
 all : $(NAME)
 
 $(NAME): $(OBJ)
-	make -C ./libft
+	$(MAKE) -C ./libft
 	mv ./libft/libft.a $(NAME)
 	ar rcs $(NAME) $(OBJ)
 
-$(OBJ_D)/%.o : %.c libft.h
-	$(CC) -c -o $@ $< $(CFLAGS)
+$(OBJ) : $(SRCS)
+	$(CC) $(CFLAGS) $< -c -o $@
 
 .PHONY: clean
 clean:
-	make clean -C ./libft
-	rm -f $(OBJ) $(BOBJ)
+	$(MAKE) clean -C ./libft
+	$(RM) $(OBJ)
 
 .PHONY: fclean
 fclean: clean
-	make fclean -C ./libft
-	rm -f $(NAME)
+	$(MAKE) fclean -C ./libft
+	$(RM) $(NAME)
 
 .PHONY: re
-re: fclean
-	make re -C ./libft
-	make all
+re:
+	$(MAKE) fclean
+	$(MAKE) re -C ./libft
+	$(MAKE) all
 
 .PHONY: debug
-debug: $(OBJ) $(BOBJ)
-	make -C ./libft
+debug: $(OBJ)
+	$(MAKE) -C ./libft
 	$(CC) $(CFLAGS) $(OBJ) ./libft/*.o main.c -o a.out
 
 .PHONY: valgrind
