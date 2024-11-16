@@ -6,7 +6,7 @@
 /*   By: mjuncker <mjuncker@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:15:36 by mjuncker          #+#    #+#             */
-/*   Updated: 2024/11/14 18:38:01 by mjuncker         ###   ########.fr       */
+/*   Updated: 2024/11/16 11:18:27 by mjuncker         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ static size_t	uget_nb_len(unsigned int n)
 char	*u_ft_itoa(unsigned int n)
 {
 	unsigned long int	nb;
-	char		*res;
-	size_t		i;
-	size_t		len;
+	char	*res;
+	size_t	i;
+	size_t	len;
 
 	len = uget_nb_len(n);
 	nb = (unsigned long)n;
