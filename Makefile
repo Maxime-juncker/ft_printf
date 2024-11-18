@@ -5,35 +5,31 @@
 #                                                     +:+ +:+         +:+      #
 #    By: mjuncker <mjuncker@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/10/24 18:00:56 by mjuncker          #+#    #+#              #
-#    Updated: 2024/11/16 13:19:38 by mjuncker         ###   ########.fr        #
+#    Created: 2024/11/18 12:19:24 by mjuncker          #+#    #+#              #
+#    Updated: 2024/11/18 16:52:02 by mjuncker         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
+CFLAGS = -Wall -Wextra -Werror $(INCLUDES_D)
+
+SRC = ft_printf.c
+OBJ = $(SRC:.c=.o)
 
 OBJ_D = obj/
 SRCS_D = src/
 BIN_D = bin/
 INCLUDES_D = -Iincludes/ -Ilibft/includes/
 
-SRCS = ft_printf.c main.c
-OBJ = $(SRCS:.c=.o)
+all: $(NAME)
 
 OBJ := $(addprefix $(OBJ_D), $(OBJ))
 SRCS := $(addprefix $(SRCS_D), $(SRCS))
 
-CC = cc
-CFLAGS = -Wall -Werror -Wextra -g3 $(INCLUDES_D)
-
-RM = rm -fr
-
-.PHONY: all
-all : libft $(NAME)
-	cp ./libft/bin/libft.a $(BIN_D)$(NAME)
-
-$(NAME): $(OBJ) | $(BIN_D)
-	ar rcs $(BIN_D)$(NAME) $(OBJ)
+$(NAME): $(OBJ)
+	$(MAKE) -C libft
+	mv libft/bin/libft.a $(NAME)
+	ar rcs $(NAME) $(OBJ)
 
 $(OBJ_D)%.o : $(SRCS_D)%.c | $(OBJ_D)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -78,6 +74,4 @@ run: debug
 
 .PHONY: valgrind
 valgrind: debug
-	@valgrind --track-origins=yes ./a.out
-
-
+	@valgrind --track-origins=yes $(BIN)./a.out
