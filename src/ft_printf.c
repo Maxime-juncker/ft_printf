@@ -6,21 +6,12 @@
 /*   By: mjuncker <mjuncker@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:15:36 by mjuncker          #+#    #+#             */
-/*   Updated: 2024/11/19 09:25:37 by mjuncker         ###   ########.fr       */
+/*   Updated: 2024/11/19 12:43:13 by mjuncker         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include <limits.h>
-
-/*
-	TODO: remove unsused include
-	TODO: check if main.c of .vscode is in git or any useless files
-	TODO: norminette...
-	TODO: refactor everything
-	TODO: make makefile for libft along folder for bin, obj, src, include
-	TODO: Check every malloc protection
-*/
 
 int	ft_printf(const char *s, ...)
 {
@@ -41,7 +32,11 @@ int	ft_printf(const char *s, ...)
 			if (*s == 'd' || *s == 'i')
 				nb_write += ft_putnbr_fd(va_arg(ptr, int), 1);
 			if (*s == 'u')
-				nb_write = ft_putstr_fd(u_ft_itoa(va_arg(ptr, unsigned int)), 1);
+			{
+				tmp = (char *)u_ft_itoa(va_arg(ptr, unsigned int));
+				nb_write += ft_putstr_fd(tmp, 1);
+				free(tmp);
+			}
 			if (*s == 'c')
 			{
 				ft_putchar_fd(va_arg(ptr, int) % 256, 1);

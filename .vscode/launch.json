@@ -5,7 +5,7 @@
 		"name": "(gdb) Launch",
 		"type": "cppdbg",
 		"request": "launch",
-		"program": "${workspaceFolder}/a.out", // Change this to the output file name
+		"program": "${workspaceFolder}/bin/a.out", // Change this to the output file name
 		"args": [],
 		"stopAtEntry": false,
 		"cwd": "${workspaceFolder}",

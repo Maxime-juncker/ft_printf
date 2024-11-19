@@ -6,14 +6,14 @@
 #    By: mjuncker <mjuncker@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/18 12:19:24 by mjuncker          #+#    #+#              #
-#    Updated: 2024/11/18 16:52:02 by mjuncker         ###   ########.fr        #
+#    Updated: 2024/11/19 12:31:25 by mjuncker         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
-CFLAGS = -Wall -Wextra -Werror $(INCLUDES_D)
+CFLAGS = -Wall -Wextra -Werror -g3 $(INCLUDES_D)
 
-SRC = ft_printf.c
+SRC = ft_printf.c main.c
 OBJ = $(SRC:.c=.o)
 
 OBJ_D = obj/
@@ -42,7 +42,7 @@ clean:
 .PHONY: fclean
 fclean: clean
 	$(MAKE) fclean -C ./libft
-	$(RM) $(BIN_D)$(NAME)
+	$(RM) $(NAME)
 	$(RM) $(BIN_D)a.out
 
 .PHONY: libft
@@ -64,9 +64,9 @@ $(BIN_D):
 
 # debug targets
 .PHONY: debug
-debug:
+debug: $(OBJ) | $(BIN_D)
 	$(MAKE) so -C ./libft
-	$(CC) $(CFLAGS) $(SRCS) ./libft/bin/libft.so -o $(BIN_D)a.out
+	$(CC) $(CFLAGS) $(OBJ) ./libft/bin/libft.so -o $(BIN_D)a.out
 
 .PHONY: run
 run: debug
@@ -74,4 +74,4 @@ run: debug
 
 .PHONY: valgrind
 valgrind: debug
-	@valgrind --track-origins=yes $(BIN)./a.out
+	@valgrind --track-origins=yes $(BIN)/a.out
