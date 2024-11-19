@@ -6,7 +6,7 @@
 #    By: mjuncker <mjuncker@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/18 12:19:24 by mjuncker          #+#    #+#              #
-#    Updated: 2024/11/19 12:31:25 by mjuncker         ###   ########.fr        #
+#    Updated: 2024/11/19 13:17:38 by mjuncker         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,4 +74,4 @@ run: debug
 
 .PHONY: valgrind
 valgrind: debug
-	@valgrind --track-origins=yes $(BIN)/a.out
+	@valgrind --leak-check=full bin/a.out
