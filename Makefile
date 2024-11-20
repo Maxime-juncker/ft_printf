@@ -6,14 +6,14 @@
 #    By: mjuncker <mjuncker@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/18 12:19:24 by mjuncker          #+#    #+#              #
-#    Updated: 2024/11/19 13:17:38 by mjuncker         ###   ########.fr        #
+#    Updated: 2024/11/20 09:26:59 by mjuncker         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
-CFLAGS = -Wall -Wextra -Werror -g3 $(INCLUDES_D)
+CFLAGS = -Wall -Wextra -Werror $(INCLUDES_D)
 
-SRC = ft_printf.c main.c
+SRC = ft_printf.c
 OBJ = $(SRC:.c=.o)
 
 OBJ_D = obj/
@@ -31,7 +31,7 @@ $(NAME): $(OBJ)
 	mv libft/bin/libft.a $(NAME)
 	ar rcs $(NAME) $(OBJ)
 
-$(OBJ_D)%.o : $(SRCS_D)%.c | $(OBJ_D)
+$(OBJ_D)%.o : $(SRCS_D)%.c includes/ft_printf.h | $(OBJ_D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: clean
@@ -66,7 +66,9 @@ $(BIN_D):
 .PHONY: debug
 debug: $(OBJ) | $(BIN_D)
 	$(MAKE) so -C ./libft
-	$(CC) $(CFLAGS) $(OBJ) ./libft/bin/libft.so -o $(BIN_D)a.out
+	$(CFLAGS) += -g3
+	$(CC) $(CFLAGS) -c main.c -o obj/main.o
+	$(CC) $(CFLAGS) $(OBJ) obj/main.o ./libft/bin/libft.so -o $(BIN_D)a.out
 
 .PHONY: run
 run: debug

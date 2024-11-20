@@ -54,3 +54,5 @@ dkms.conf
 # Directories
 bin/
 obj/
+main.c
+
